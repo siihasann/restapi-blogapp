@@ -26,8 +26,10 @@ Admin Panel ini memungkinkan manajemen data Posts dan Comments dengan fitur aute
 
 ## Screenshot Aplikasi
 
-![Dashboard](screenshots/dashboard.png)
-![Create Post](screenshots/create_post.png)
+![Dashboard](![image](https://github.com/user-attachments/assets/6ec49a04-fde7-4a32-81e6-e6f905641c76)
+)
+![Create Post](![image](https://github.com/user-attachments/assets/ed43c991-a340-4714-b1b0-ac31613d3f54)
+)
 
 ## Dependency
 
