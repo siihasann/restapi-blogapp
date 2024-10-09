@@ -1,4 +1,4 @@
-# Admin Panel
+# RestAPI BlogApp
 
 ## Penjelasan Project
 
@@ -31,16 +31,17 @@ Admin Panel ini memungkinkan manajemen data Posts dan Comments dengan fitur aute
 
 ## Dependency
 
-- PHP >= 8.0
+- PHP >= 9.0
 - Laravel Framework
 - Livewire
 - Tailwind CSS
 - Laravel Sanctum
+- Laravel Breze
 
 ## Instalasi
 
 1. Clone repository:
 
    ```bash
-   git clone https://github.com/username/admin-panel.git
-   cd admin-panel
+   git clone 
+   cd restapi-blogapp
