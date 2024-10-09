@@ -29,6 +29,8 @@ Admin Panel ini memungkinkan manajemen data Posts dan Comments dengan fitur aute
 ![image](https://github.com/user-attachments/assets/7ef03ca1-c69e-4b1e-b3d1-9113f9b418a3)
 ![image](https://github.com/user-attachments/assets/56d394fb-2509-426b-aaa1-6dc43a8b4734)
 
+<img src="https://github.com/user-attachments/assets/7ef03ca1-c69e-4b1e-b3d1-9113f9b418a3" alt="Deskripsi Gambar" width="200" />
+
 
 ## Dependency
 
