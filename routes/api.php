@@ -18,22 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-
-    
-});
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 
-Route::apiResource('posts', PostController::class)->middleware(['auth:sanctum']);
-Route::get('posts/search', [PostController::class, 'search']);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('posts', [PostController::class, 'index']);
+    Route::get('posts/search', [PostController::class, 'search']);
+    Route::get('posts/{id}', [PostController::class, 'show']);
+    Route::post('posts', [PostController::class, 'store']);
+    Route::put('posts/{id}', [PostController::class, 'update']);
+    Route::delete('posts/{id}', [PostController::class, 'destroy']);
 
-Route::apiResource('comments', CommentController::class);
-Route::get('comments/search', [CommentController::class, 'search']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('comments', CommentController::class);
+    Route::get('comments/search', [CommentController::class, 'search']);
 
-    
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
 
-// });
+});
