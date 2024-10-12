@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
+    // API Post
     Route::get('posts', [PostController::class, 'index']);
     Route::get('posts/search', [PostController::class, 'search']);
     Route::get('posts/{id}', [PostController::class, 'show']);
@@ -29,9 +30,12 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::put('posts/{id}', [PostController::class, 'update']);
     Route::delete('posts/{id}', [PostController::class, 'destroy']);
 
-
-    Route::apiResource('comments', CommentController::class);
-    Route::get('comments/search', [CommentController::class, 'search']);
+    // API Comment
+    Route::get('comments', [CommentController::class, 'index']);
+    Route::post('comment/{post_id}', [CommentController::class, 'store']);
+    Route::get('comment/{id}', [CommentController::class, 'show']);
+    Route::put('comment/{id}', [CommentController::class, 'update']);
+    Route::delete('comment/{id}', [CommentController::class, 'destroy']);
 
     Route::post('/logout', [AuthenticationController::class, 'logout']);
 

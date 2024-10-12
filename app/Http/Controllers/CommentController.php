@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Exists;
 
@@ -15,7 +17,18 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return Comment::with('post')->get();
+        $comments = Comment::with('post')->get();
+        if ($comments->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'not comment available'
+            ], 404);    
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $comments
+        ], 200);
+        // return Comment::with('post')->get();
     }
 
     /**
@@ -24,15 +37,33 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $post_id)
     {
-        $request->validate([
-            'post_id' => 'require|exists:posts,id',
-            'comment' => 'require|string'
+        $validateData = $request->validate([
+            'comment' => 'required|string|max:255',
         ]);
+        
+        try {
+            $post = Post::findOrFail($post_id);
 
-        $comment = Comment::create($request->all());
-        return response()->json($comment, 201);
+
+            $comment = new Comment();
+            $comment->comment = $validateData['comment'];
+            $comment->post_id = $post->id;
+
+            $comment->save();
+            return response()->json([
+                'success' => true,
+                'message' => "Comment addes successfully",
+                'data' => $comment,
+
+            ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Post dengan ID {$post_id} not found",
+            ], 404);
+        }
     }
 
     /**
@@ -43,15 +74,19 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        return Comment::with('post')->findOrFail($id);
+        try {
+            $comment = Comment::with('post')->findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $comment
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Comment with ID $id not found"
 
-        $request->validate([
-            'post_id' => 'require|exists:posts,id',
-            'comment' => 'require|string'
-        ]);
-
-        $comment->update($request->all());
-        return response()->json($comment);
+            ], 404);
+        }
     }
 
     /**
@@ -63,8 +98,28 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $comment = Comment::findOrFail($id);
+        $validateData = $request->validate([
+            'comment' => 'required|string|max:255',
+            'post_id' => 'required|exists:posts,id',
+        ]);
+        try {
+            $comment = Comment::findOrFail($id);
 
+            $post = Post::findOrFail($validateData['post_id']);
+            $comment->comment = $validateData['comment'];
+            $comment->post_id = $post->id;
+            $comment->save();
+            return response()->json([
+                'success' => true,
+                'message' => "Comment update successfully",
+                'data' => $comment
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'messages' => "comment with ID $id not found",
+            ],404);
+        }
     }
 
     /**
@@ -75,8 +130,19 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        Comment::destroy($id);
-        return response()->json(null, 204);
+
+        $comment = Comment::destroy($id);
+
+        if (! $comment) {
+            return response()->json([
+                'success' => false,
+                'message' => "Comment with ID $id not found"
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "delete comment with ID $id successfully"
+        ], 200);
     }
 
     // Pencarian komentar
