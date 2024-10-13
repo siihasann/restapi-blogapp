@@ -33,8 +33,8 @@ Admin Panel ini memungkinkan manajemen data Posts dan Comments dengan fitur aute
 
 ## Dependency
 
-- PHP >= 9.0
-- Laravel Framework
+- PHP >= 8.0.28
+- Laravel Framework versi 9
 - Livewire
 - Tailwind CSS
 - Laravel Sanctum
